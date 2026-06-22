@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Difficulty } from "@/types/game";
+import { DIFFICULTY_CONFIGS } from "@/lib/constants";
+import { trackDifficultySelected, trackGameStarted } from "@/lib/analytics";
 import Image from "next/image";
 import DifficultySelector from "@/components/DifficultySelector";
 import ContourBackground from "@/components/ContourBackground";
@@ -11,8 +13,14 @@ export default function Home() {
   const [selected, setSelected] = useState<Difficulty | undefined>();
   const router = useRouter();
 
+  const handleSelect = (difficulty: Difficulty) => {
+    setSelected(difficulty);
+    trackDifficultySelected(difficulty);
+  };
+
   const handleStart = () => {
     if (selected) {
+      trackGameStarted(selected, DIFFICULTY_CONFIGS[selected].pairs);
       router.push(`/game?difficulty=${selected}`);
     }
   };
@@ -42,7 +50,7 @@ export default function Home() {
         </p>
       </div>
 
-      <DifficultySelector onSelect={setSelected} current={selected} />
+      <DifficultySelector onSelect={handleSelect} current={selected} />
 
       <button
         onClick={handleStart}

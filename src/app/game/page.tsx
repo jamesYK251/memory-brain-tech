@@ -1,12 +1,18 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Difficulty } from "@/types/game";
 import { useGameState } from "@/hooks/useGameState";
 import { useTimer } from "@/hooks/useTimer";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { calculateScore } from "@/lib/scoring";
+import { calculateScore, getStarRating } from "@/lib/scoring";
+import {
+  trackMatchFound,
+  trackGameCompleted,
+  trackNewGame,
+  trackChangeDifficulty,
+} from "@/lib/analytics";
 import { ScoreRecord } from "@/types/game";
 import GameBoard from "@/components/GameBoard";
 import GameHeader from "@/components/GameHeader";
@@ -26,6 +32,7 @@ function GameContent() {
   );
   const [finalScore, setFinalScore] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
+  const prevMatchedPairs = useRef(0);
 
   const handleFlip = useCallback(
     (cardId: string) => {
@@ -39,6 +46,19 @@ function GameContent() {
   );
 
   useEffect(() => {
+    if (game.matchedPairs > prevMatchedPairs.current) {
+      trackMatchFound(
+        difficulty,
+        game.matchedPairs,
+        game.totalPairs,
+        game.moves,
+        game.consecutiveMatches,
+      );
+    }
+    prevMatchedPairs.current = game.matchedPairs;
+  }, [game.matchedPairs]);
+
+  useEffect(() => {
     if (game.isComplete && hasStarted) {
       timer.stop();
       const score = calculateScore(
@@ -48,6 +68,15 @@ function GameContent() {
         game.maxConsecutiveMatches,
       );
       setFinalScore(score);
+      trackGameCompleted(
+        difficulty,
+        game.moves,
+        timer.elapsedSeconds,
+        score,
+        getStarRating(difficulty, score),
+        game.maxConsecutiveMatches,
+        game.totalPairs,
+      );
 
       const record: ScoreRecord = {
         difficulty,
@@ -61,15 +90,18 @@ function GameContent() {
   }, [game.isComplete]);
 
   const handleNewGame = useCallback(() => {
+    trackNewGame(difficulty);
     game.resetGame();
     timer.reset();
     setHasStarted(false);
     setFinalScore(0);
-  }, [game, timer]);
+    prevMatchedPairs.current = 0;
+  }, [game, timer, difficulty]);
 
   const handleChangeDifficulty = useCallback(() => {
+    trackChangeDifficulty(difficulty);
     router.push("/");
-  }, [router]);
+  }, [router, difficulty]);
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
