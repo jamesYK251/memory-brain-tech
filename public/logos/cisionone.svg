@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <text x="100" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="700" fill="#6B2D8B">Cision</text>
+  <text x="100" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#6B2D8B">One</text>
+  <rect x="30" y="68" width="140" height="2" rx="1" fill="#6B2D8B"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <g transform="translate(30, 40)">
+    <circle cx="0" cy="0" r="15" fill="#FF6B00"/>
+    <path d="M-5,-8 L8,0 L-5,8 Z" fill="#fff"/>
+  </g>
+  <text x="125" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="700" fill="#2D2D2D">Khoros</text>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <g transform="translate(32, 40)">
+    <circle cx="0" cy="-6" r="10" fill="#143059"/>
+    <circle cx="-3" cy="-8" r="2" fill="#fff"/>
+    <circle cx="3" cy="-8" r="2" fill="#fff"/>
+    <ellipse cx="0" cy="8" rx="6" ry="4" fill="#143059"/>
+  </g>
+  <text x="125" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#143059">Hootsuite</text>
+</svg>
