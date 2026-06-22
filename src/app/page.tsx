@@ -26,9 +26,9 @@ export default function Home() {
           <Image
             src="/youknow-logo.png"
             alt="YOUKNOW Technologies"
-            width={320}
-            height={85}
-            className="mx-auto w-auto h-auto"
+            width={200}
+            height={53}
+            className="mx-auto h-auto max-w-[180px] sm:max-w-[200px]"
             priority
           />
         </div>
